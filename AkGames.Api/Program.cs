@@ -18,9 +18,25 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-builder.Services.AddScoped<IGamesRepo,GameRepo>();
-builder.Services.AddScoped<ICategoriseRepo,CategoriseRepo>();
-builder.Services.AddScoped<IDevicesRepo,DevicesRepo>();
+builder.Services.AddScoped<IGamesRepo, GameRepo>();
+builder.Services.AddScoped<ICategoriseRepo, CategoriseRepo>();
+builder.Services.AddScoped<IDevicesRepo, DevicesRepo>();
+
+var policyName = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddPolicy(name: policyName,
+                          builder =>
+                          {
+                              builder
+                                .WithOrigins("http://akgames.vercel.app/")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                          });
+    }
+    );
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -29,11 +45,13 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(policyName);
 
 app.UseHttpsRedirection();
 

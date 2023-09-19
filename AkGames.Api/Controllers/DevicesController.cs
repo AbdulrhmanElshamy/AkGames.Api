@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AkGames.Api.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class DevicesController : Controller
     {
         private readonly IDevicesRepo _devicesRepo;
