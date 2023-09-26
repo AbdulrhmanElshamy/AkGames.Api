@@ -1,36 +1,55 @@
+using AkGames.Api.Core.Models;
 using AkGames.Api.Dtos;
 using AkGames.Api.Repos.GamesRepos;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AkGames.Api.Controllers
 {
+    [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class GamesController : ControllerBase
     {
         private readonly IGamesRepo _gamesService;
+        private readonly IMapper _mapper;
 
-        public GamesController(IGamesRepo gamesService)
+        public GamesController(IGamesRepo gamesService, IMapper mapper)
         {
             _gamesService = gamesService;
+            _mapper = mapper;
         }
 
         [HttpGet("GetAll")]
         public IActionResult Get()
         {
-            var games = _gamesService.GetAll();
+            var games = _mapper.Map<IList<GameGitDto>>(_gamesService.GetAll()); 
             return Ok(games);
         }
 
         [HttpGet("GetById")]
         public IActionResult GetById(int id)
         {
-            var game = _gamesService.GetById(id);
+            var game = _mapper.Map<GameGitDto>( _gamesService.GetById(id));
 
             if (game is null)
                 return NotFound();
 
             return Ok(game);
+        }
+
+
+        [HttpGet("GetAllByCategoryId")]
+        public IActionResult Get(int CategoryId)
+        {
+            var GamesByCategoryId = new GamesGitByCategoryIdDto();
+
+            GamesByCategoryId.Games = _mapper.Map<IList<GameGitDto>>(_gamesService.GetAllByCategoryId(CategoryId));
+
+            GamesByCategoryId.CategoryId = CategoryId;
+
+            return Ok(GamesByCategoryId);
         }
 
 
@@ -42,9 +61,9 @@ namespace AkGames.Api.Controllers
                 return BadRequest();
             }
 
-            await _gamesService.Create(model);
+            var game = _mapper.Map<GameGitDto>(await _gamesService.Create(model));
 
-            return Ok(model);
+            return Ok(game);
         }
 
         [HttpPost("Edit")]

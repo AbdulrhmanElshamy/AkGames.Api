@@ -1,4 +1,5 @@
 ﻿using AkGames.Api.Core;
+using AkGames.Api.Core.Models;
 using AkGames.Api.Data;
 using AkGames.Api.Dtos;
 using AkGames.Api.Settings;
@@ -40,7 +41,19 @@ namespace AkGames.Api.Repos.GamesRepos
                 .SingleOrDefault(g => g.Id == id);
         }
 
-        public async Task Create(CreateGameFormDto model)
+
+        public IEnumerable<Game> GetAllByCategoryId(int Id)
+        {
+            return _context.Games
+                .Where(g => g.CategoryId == Id) 
+                .Include(g => g.Category)
+                .Include(g => g.Devices)
+                .ThenInclude(d => d.Device)
+                .AsNoTracking()
+                .ToList();
+        }
+
+        public async Task<Game> Create(CreateGameFormDto model)
         {
             var coverName = await SaveCover(model.Cover);
 
@@ -55,6 +68,8 @@ namespace AkGames.Api.Repos.GamesRepos
 
             _context.Add(game);
             _context.SaveChanges();
+
+            return game;
         }
 
         public async Task<Game?> Update(EditGameFormDto model)

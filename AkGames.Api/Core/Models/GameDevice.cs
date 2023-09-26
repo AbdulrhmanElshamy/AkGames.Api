@@ -1,4 +1,4 @@
-﻿namespace AkGames.Api.Core
+﻿namespace AkGames.Api.Core.Models
 {
     public class GameDevice
     {

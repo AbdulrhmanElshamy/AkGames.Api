@@ -1,4 +1,4 @@
-﻿using AkGames.Api.Core;
+﻿using AkGames.Api.Core.Models;
 
 namespace AkGames.Api.Repos.DevicesRepos
 {

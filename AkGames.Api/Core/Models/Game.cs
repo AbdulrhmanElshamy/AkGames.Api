@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AkGames.Api.Core
+namespace AkGames.Api.Core.Models
 {
     public class Game : BaseEntity
     {

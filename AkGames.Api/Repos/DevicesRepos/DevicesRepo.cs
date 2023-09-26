@@ -1,4 +1,4 @@
-﻿using AkGames.Api.Core;
+﻿using AkGames.Api.Core.Models;
 using AkGames.Api.Data;
 using Microsoft.EntityFrameworkCore;
 

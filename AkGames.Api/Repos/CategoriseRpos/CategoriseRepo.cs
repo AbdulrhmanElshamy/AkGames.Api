@@ -1,4 +1,4 @@
-﻿using AkGames.Api.Core;
+﻿using AkGames.Api.Core.Models;
 using AkGames.Api.Data;
 using AkGames.Api.Dtos;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +30,7 @@ namespace AkGames.Api.Repos.CategoriseRpos
                 .SingleOrDefault(g => g.Id == id);
         }
 
-        public async Task Create(CategoryFormDto model)
+        public async Task<Category> Create(CategoryFormDto model)
         {
 
             Category category = new()
@@ -40,6 +40,8 @@ namespace AkGames.Api.Repos.CategoriseRpos
 
             _context.Add(category);
             await _context.SaveChangesAsync();
+
+            return category;
         }
 
         public async Task<Category?> Update(EditCategoryFormDto model)

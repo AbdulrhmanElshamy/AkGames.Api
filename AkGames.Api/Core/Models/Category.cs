@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace AkGames.Api.Core
+namespace AkGames.Api.Core.Models
 {
     [Index(nameof(Name), IsUnique = true)]
     public class Category : BaseEntity

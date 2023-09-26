@@ -1,4 +1,4 @@
-﻿using AkGames.Api.Core;
+﻿using AkGames.Api.Core.Models;
 using AkGames.Api.Dtos;
 
 namespace AkGames.Api.Repos.CategoriseRpos
@@ -7,7 +7,7 @@ namespace AkGames.Api.Repos.CategoriseRpos
     {
         IEnumerable<Category> GetAll();
         Category? GetById(int id);
-        Task Create(CategoryFormDto model);
+        Task<Category> Create(CategoryFormDto model);
         Task<Category?> Update(EditCategoryFormDto model);
     }
 }
